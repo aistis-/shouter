@@ -1,0 +1,8 @@
+index_shout:
+    path: /shout/{personSlug}
+    controller: app.controller.api::shout
+
+index_authors:
+    path: /authors
+    controller: app.controller.api::authors
+

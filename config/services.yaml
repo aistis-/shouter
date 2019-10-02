@@ -1,0 +1,35 @@
+services:
+    app.controller.api:
+        class: App\Controller\ApiController
+        public: true
+        arguments:
+            - '@app.quote.provider'
+            - '@app.quote.json_data_source'
+
+    app.quote.provider:
+        class: App\Quote\QuoteProvider
+        public: true
+        arguments:
+            - '@app.quote.chain_data_source'
+            - '@app.quote.provider_cache'
+
+    app.quote.provider_cache:
+        class: Symfony\Component\Cache\Adapter\ArrayAdapter
+        arguments:
+            - '60' # Cache lifetime in seconds
+
+    app.quote.chain_data_source:
+        class: App\Quote\DataSource\ChainDataSource
+        arguments:
+            -
+                - '@app.quote.json_data_source'
+
+    app.quote.json_data_source:
+        class: App\Quote\DataSource\JsonDataSource
+        public: true
+        arguments:
+            - '@app.slugify'
+            - '%kernel.project_dir%/data/quotes.json'
+
+    app.slugify:
+        class: Cocur\Slugify\Slugify
